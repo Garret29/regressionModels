@@ -23,7 +23,7 @@ linearRegression.fit(X_train, Y_train)
 
 alpha = 0.15
 
-ridgeRegression = Ridge(alpha=0)
+ridgeRegression = Ridge(alpha=alpha)
 ridgeRegression.fit(X_train, Y_train)
 
 lassoRegression = Lasso(alpha=alpha)
@@ -34,6 +34,9 @@ elasticNetRegression.fit(X_train, Y_train)
 
 models = {"linearRegression": linearRegression, "ridgeRegression": ridgeRegression, "lassoRegression": lassoRegression,
           "elasticNetRegression": elasticNetRegression}
+
+
+print("alpha =", alpha, "l1_ratio =", 0.8)
 
 for key in models:
     print(key, ": ", "Współczynnik determinacji dla zbioru testowego: ", models[key].score(X_test, Y_test),
