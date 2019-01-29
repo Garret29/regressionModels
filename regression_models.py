@@ -1,4 +1,4 @@
-from sklearn.datasets import load_boston
+from sklearn.datasets import load_diabetes
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import Ridge, Lasso, LinearRegression, ElasticNet
 import matplotlib.pyplot as plt
@@ -8,12 +8,15 @@ import matplotlib
 
 matplotlib.rcParams.update({'font.size': 12})
 
-boston = load_boston()
-boston_data = pd.DataFrame(boston.data, columns=boston.feature_names)
-boston_data['Price'] = boston.target
+diabetes = load_diabetes()
 
-X = boston_data['RM'].values[:, np.newaxis]
-Y = boston_data['Price'].values
+print(diabetes.feature_names)
+
+diabetes_data = pd.DataFrame(diabetes.data, columns=diabetes.feature_names)
+diabetes_data['progression'] = diabetes.target
+
+X = diabetes_data['bmi'].values[:, np.newaxis]
+Y = diabetes_data['progression'].values
 
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.15)
 
@@ -41,26 +44,26 @@ for key in models:
 
 plt.scatter(X_train, Y_train, color='r')
 plt.plot(X_train, linearRegression.predict(X_train), color='k')
-plt.ylabel('Mediana ceny mieszkania')
-plt.xlabel('Liczba pokoi')
+plt.ylabel('Miara rozwoju cukrzycy')
+plt.xlabel('Zestandaryzowane BMI')
 plt.show()
 
 plt.scatter(X_train, Y_train, color='g')
 plt.plot(X_train, lassoRegression.predict(X_train), color='k')
-plt.ylabel('Mediana ceny mieszkania')
-plt.xlabel('Liczba pokoi')
+plt.ylabel('Miara rozwoju cukrzycy')
+plt.xlabel('Zestandaryzowane BMI')
 plt.show()
 
 plt.scatter(X_train, Y_train, color='b')
 plt.plot(X_train, ridgeRegression.predict(X_train), color='k')
-plt.ylabel('Mediana ceny mieszkania')
-plt.xlabel('Liczba pokoi')
+plt.ylabel('Miara rozwoju cukrzycy')
+plt.xlabel('Zestandaryzowane BMI')
 plt.show()
 
 plt.scatter(X_train, Y_train, color='y')
 plt.plot(X_train, elasticNetRegression.predict(X_train), color='k')
-plt.ylabel('Mediana ceny mieszkania')
-plt.xlabel('Liczba pokoi')
+plt.ylabel('Miara rozwoju cukrzycy')
+plt.xlabel('Zestandaryzowane BMI')
 plt.show()
 
 alphas = []
