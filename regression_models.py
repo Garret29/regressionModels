@@ -10,8 +10,6 @@ matplotlib.rcParams.update({'font.size': 12})
 
 diabetes = load_diabetes()
 
-print(diabetes.feature_names)
-
 diabetes_data = pd.DataFrame(diabetes.data, columns=diabetes.feature_names)
 diabetes_data['progression'] = diabetes.target
 
@@ -25,7 +23,7 @@ linearRegression.fit(X_train, Y_train)
 
 alpha = 0.15
 
-ridgeRegression = Ridge(alpha=alpha)
+ridgeRegression = Ridge(alpha=0)
 ridgeRegression.fit(X_train, Y_train)
 
 lassoRegression = Lasso(alpha=alpha)
@@ -42,26 +40,26 @@ for key in models:
           ", Współczynnik determinacji dla zbioru uczącego: ", models[key].score(X_train, Y_train),
           ", Współczynnik 'a' prostej regresji: ", models[key].coef_)
 
-plt.scatter(X_train, Y_train, color='r')
-plt.plot(X_train, linearRegression.predict(X_train), color='k')
+plt.scatter(X, Y, color='r')
+plt.plot(X, linearRegression.predict(X), color='k')
 plt.ylabel('Miara rozwoju cukrzycy')
 plt.xlabel('Zestandaryzowane BMI')
 plt.show()
 
-plt.scatter(X_train, Y_train, color='g')
-plt.plot(X_train, lassoRegression.predict(X_train), color='k')
+plt.scatter(X, Y, color='g')
+plt.plot(X, lassoRegression.predict(X), color='k')
 plt.ylabel('Miara rozwoju cukrzycy')
 plt.xlabel('Zestandaryzowane BMI')
 plt.show()
 
-plt.scatter(X_train, Y_train, color='b')
-plt.plot(X_train, ridgeRegression.predict(X_train), color='k')
+plt.scatter(X, Y, color='b')
+plt.plot(X, ridgeRegression.predict(X), color='k')
 plt.ylabel('Miara rozwoju cukrzycy')
 plt.xlabel('Zestandaryzowane BMI')
 plt.show()
 
-plt.scatter(X_train, Y_train, color='y')
-plt.plot(X_train, elasticNetRegression.predict(X_train), color='k')
+plt.scatter(X, Y, color='y')
+plt.plot(X, elasticNetRegression.predict(X), color='k')
 plt.ylabel('Miara rozwoju cukrzycy')
 plt.xlabel('Zestandaryzowane BMI')
 plt.show()
@@ -90,10 +88,6 @@ for alpha in range(1, 51):
     elasticNetRegression.fit(X_train, Y_train)
 
     elasticNetCoefs.append(elasticNetRegression.coef_[0])
-
-    models = {"linearRegression": linearRegression, "ridgeRegression": ridgeRegression,
-              "lassoRegression": lassoRegression,
-              "elasticNetRegression": elasticNetRegression}
 
 plt.plot(alphas, ridgeCoefs, color="r", label="ridge")
 plt.plot(alphas, lassoCoefs, color="g", label="lasso")
