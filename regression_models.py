@@ -13,8 +13,9 @@ diabetes = load_diabetes()
 diabetes_data = pd.DataFrame(diabetes.data, columns=diabetes.feature_names)
 diabetes_data['progression'] = diabetes.target
 
-X = diabetes_data['bmi'].values[:, np.newaxis]
-Y = diabetes_data['progression'].values
+X = diabetes_data.drop('progression', axis=1)
+X = X[['bmi']]
+Y = diabetes_data['progression']
 
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.15)
 
