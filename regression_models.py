@@ -43,60 +43,61 @@ for key in models:
     print(key, ": ", "Współczynnik determinacji dla zbioru testowego: ", models[key].score(X_test, Y_test),
           ", Współczynnik determinacji dla zbioru uczącego: ", models[key].score(X_train, Y_train),
           ", Współczynnik 'a' prostej regresji: ", models[key].coef_)
+try:
+    plt.scatter(X, Y, color='r')
+    plt.plot(X, linearRegression.predict(X), color='k')
+    plt.ylabel('Miara rozwoju cukrzycy')
+    plt.xlabel('Zestandaryzowane BMI')
+    plt.show()
 
-plt.scatter(X, Y, color='r')
-plt.plot(X, linearRegression.predict(X), color='k')
-plt.ylabel('Miara rozwoju cukrzycy')
-plt.xlabel('Zestandaryzowane BMI')
-plt.show()
+    plt.scatter(X, Y, color='g')
+    plt.plot(X, lassoRegression.predict(X), color='k')
+    plt.ylabel('Miara rozwoju cukrzycy')
+    plt.xlabel('Zestandaryzowane BMI')
+    plt.show()
 
-plt.scatter(X, Y, color='g')
-plt.plot(X, lassoRegression.predict(X), color='k')
-plt.ylabel('Miara rozwoju cukrzycy')
-plt.xlabel('Zestandaryzowane BMI')
-plt.show()
+    plt.scatter(X, Y, color='b')
+    plt.plot(X, ridgeRegression.predict(X), color='k')
+    plt.ylabel('Miara rozwoju cukrzycy')
+    plt.xlabel('Zestandaryzowane BMI')
+    plt.show()
 
-plt.scatter(X, Y, color='b')
-plt.plot(X, ridgeRegression.predict(X), color='k')
-plt.ylabel('Miara rozwoju cukrzycy')
-plt.xlabel('Zestandaryzowane BMI')
-plt.show()
+    plt.scatter(X, Y, color='y')
+    plt.plot(X, elasticNetRegression.predict(X), color='k')
+    plt.ylabel('Miara rozwoju cukrzycy')
+    plt.xlabel('Zestandaryzowane BMI')
+    plt.show()
 
-plt.scatter(X, Y, color='y')
-plt.plot(X, elasticNetRegression.predict(X), color='k')
-plt.ylabel('Miara rozwoju cukrzycy')
-plt.xlabel('Zestandaryzowane BMI')
-plt.show()
+    alphas = []
+    ridgeCoefs = []
+    lassoCoefs = []
+    elasticNetCoefs = []
 
-alphas = []
-ridgeCoefs = []
-lassoCoefs = []
-elasticNetCoefs = []
+    for alpha in range(1, 51):
+        newAlpha = alpha / 10
+        alphas.append(newAlpha)
 
-for alpha in range(1, 51):
+        ridgeRegression = Ridge(alpha=newAlpha)
+        ridgeRegression.fit(X_train, Y_train)
 
-    newAlpha = alpha/10
-    alphas.append(newAlpha)
+        ridgeCoefs.append(ridgeRegression.coef_[0])
 
-    ridgeRegression = Ridge(alpha=newAlpha)
-    ridgeRegression.fit(X_train, Y_train)
+        lassoRegression = Lasso(alpha=newAlpha)
+        lassoRegression.fit(X_train, Y_train)
 
-    ridgeCoefs.append(ridgeRegression.coef_[0])
+        lassoCoefs.append(lassoRegression.coef_[0])
 
-    lassoRegression = Lasso(alpha=newAlpha)
-    lassoRegression.fit(X_train, Y_train)
+        elasticNetRegression = ElasticNet(alpha=newAlpha, l1_ratio=0.8)
+        elasticNetRegression.fit(X_train, Y_train)
 
-    lassoCoefs.append(lassoRegression.coef_[0])
+        elasticNetCoefs.append(elasticNetRegression.coef_[0])
 
-    elasticNetRegression = ElasticNet(alpha=newAlpha, l1_ratio=0.8)
-    elasticNetRegression.fit(X_train, Y_train)
-
-    elasticNetCoefs.append(elasticNetRegression.coef_[0])
-
-plt.plot(alphas, ridgeCoefs, color="r", label="ridge")
-plt.plot(alphas, lassoCoefs, color="g", label="lasso")
-plt.plot(alphas, elasticNetCoefs, color="b", label="elastic net")
-plt.ylabel('Współczynnik nachylenia')
-plt.xlabel('Alfa')
-plt.legend()
-plt.show()
+    plt.plot(alphas, ridgeCoefs, color="r", label="ridge")
+    plt.plot(alphas, lassoCoefs, color="g", label="lasso")
+    plt.plot(alphas, elasticNetCoefs, color="b", label="elastic net")
+    plt.ylabel('Współczynnik nachylenia')
+    plt.xlabel('Alfa')
+    plt.legend()
+    plt.show()
+except:
+    print("Nie udało sie narysować wykresów. (Wykresy są przeznaczone tylko dla regresji prostej)")
